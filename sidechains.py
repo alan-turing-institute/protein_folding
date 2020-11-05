@@ -1,9 +1,14 @@
 ﻿"""Provides a scripting component.
     Inputs:
-        x: The x script variable
-        y: The y script variable
+        AA: Amino Acid names
+        AA_name: The y script variable
+        xyz:
+        atoms:
     Output:
-        a: The a output variable"""
+        a: The a output variable
+        start:
+        end:
+            """
 
 __author__ = "Flora"
 __version__ = "2020.10.28"
@@ -11,402 +16,120 @@ __version__ = "2020.10.28"
 import rhinoscriptsyntax as rs
 
 counter=-1
-aminoxea=[]
-aminoxi=[]
-atomo=[]
-amino_name=[]
-atoma=[]
+
+amino_list=[]
+
+atom_xyz_list=[]
+atom_name_list=[]
+atoms_name_list=[]
+atoms_xyz_list=[]
 
 
-"""
-        if amino_name[i] == "HIS":
-            start=[]
-            end=[]
-            ##TODO: PROVLIMA>>> DEN KLEINEI I LOUPA... 
-            GLN_start = ["C","C","CA","CA","CB","CG","CG","CD2","CE1","ND1"]
-            GLN_end =   ["O","CA","N","CB","CG","ND1","CD2","NE2","NE2", "CE1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for x in range (len(GLN_start)):
-                for y in range(len(atoma[i])):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                    if (GLN_end[x]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
+sidechains_dict = {
+"GLN":{"A": ["C","C","CA","CA","CB","CG","CD","CD"],
+    "B":["O","CA","N","CB","CG","CD","NE2","OE1"]},
+"GLU":{"A": ["C","C","CA","CA","CB","CG","CD","CD"],
+    "B":["O","CA","N","CB","CG","CD","OE2","OE1"]},
+"LYS":{"A": ["C","C","CA","CA","CB","CG","CD","CE"],
+    "B": ["O","CA","N","CB","CG","CD","CE","NZ"]},
+"ARG":{"A":["C","C","CA","CA","CB","CG","CD","NE","CZ","CZ"],
+    "B": ["O","CA","N","CB","CG","CD","NE","CZ","NH1","NH2"]},
+"ILE":{"A": ["C","C","CA","CA","CB","CB","CG1"],
+    "B": ["O","CA","N","CB","CG1","CG2","CD1"]},
+"SER":{"A": ["C","C","CA","CA","CB"],
+    "B": ["O","CA","N","CB","OG"]},
+"VAL":{"A": ["C","C","CA","CA","CB","CB"],
+    "B": ["O","CA","N","CB","CG2","CG1"]},
+"HIS": {"A": ["C","C","CA","CA","CB","CG","CG","CD2","CE1","ND1"], 
+    "B": ["O","CA","N","CB","CG","ND1","CD2","NE2","NE2","CE1"]},
+"GLY":{"A":["C","C","CA"],
+    "B": ["O","CA","N"]},
+"LEU":{"A": ["C","C","CA","CA","CB","CG","CG"],
+    "B": ["O","CA","N","CB","CG","CD1","CD2"]},
+"ALA":{"A": ["C","C","CA","CA"],
+    "B": ["O","CA","N","CB"]},
+"ASN":{"A": ["C","C","CA","CA","CB","CG","CG"],
+    "B": ["O","CA","N","CB","CG","OD1","ND2"]},
+"THR":{"A": ["C","C","CA","CA","CB","CB"],
+    "B": ["O","CA","N","CB","CG2","OG1"]},
+"PRO":{"A": ["C","C","CA","CA","CB","CG","CD"],
+    "B": ["O","CA","N","CB","CG","CD","N"]},
+"ASP":{"A":["C","C","CA","CA","CB","CG","CG"],
+    "B": ["O","CA","N","CB","CG","OD1","OD2"]},
+"TYR":{"A": ["C","C","CA","CA","CB","CG","CG","CD1","CD2","CE1","CE2","CZ"],
+    "B": ["O","CA","N","CB","CG","CD1","CD2","CE1","CE2","CZ","CZ","OH"]},
+"PHE":{"A": ["C","C","CA","CA","CB","CG","CG","CD1","CD2","CE1","CE2"],
+    "B": ["O","CA","N","CB","CG","CD1","CD2","CE1","CE2","CZ","CZ"]},
+"TRP":{"A": ["C","C","CA","CA","CB","CG","CG","CD1","CD2","NE1","CD2","CE2","CE3","CZ3","CH2"], 
+    "B": ["O","CA","N","CB","CG","CD2","CD1","NE1","CE2","CE2","CE3","CZ2","CZ3","CH2","CZ2"]},
+}
 
-
-"""
 
 # store list of atoms per aminoacid
 for i in range (len(AA)):
     if AA[i]!=counter: #a new aminoacid
-        if aminoxi != []:
-            aminoxea.append(aminoxi) #store list of atoms per AA
-            atoma.append(atomo)
+        if atom_xyz_list != []:
+            atoms_xyz_list.append(atom_xyz_list) #store list of atoms per AA
+            atoms_name_list.append(atom_name_list)
         counter=AA[i]
-        aminoxi=[]
-        atomo=[]
-        aminoxi.append(xyz[i])
-        atomo.append(atoms[i])
+        atom_xyz_list=[]
+        atom_name_list=[]
+        atom_xyz_list.append(xyz[i])
+        atom_name_list.append(atoms[i])
 
-        amino_name.append(AA_name[i]) #stores name per chain of AA
+        amino_list.append(AA_name[i]) #stores name per chain of AA
     else: # existing aminoacid
-        aminoxi.append(xyz[i])
-        atomo.append(atoms[i])
+        atom_xyz_list.append(xyz[i])
+        atom_name_list.append(atoms[i])
 
-aminoxea.append(aminoxi) #store list of atoms of final AA
-atoma.append(atomo)#store list of atoms names of final AA
+atoms_xyz_list.append(atom_xyz_list) #store list of atoms of final AA
+atoms_name_list.append(atom_name_list)#store list of atoms names of final AA
 
+
+
+def sidechain1(atoms_xyz_list,atoms_name_list):
+    start=[]
+    end=[]
+    """
+    A = sidechains_dict.get(amino_list[i],{}).get('A') #get the list of the first points of the AA
+    B = sidechains_dict.get(amino_list[i],{}).get('B')
+        for x in range (len(A)):
+            for y in range(len(atoms_name_list[i])):
+                if (A[x]==atoms_name_list[i][y]):
+                    start.append(atoms_xyz_list[i][y])
+                if (B[x]==atoms_name_list[i][y]):
+                    end.append(atoms_xyz_list[i][y])
+                    """
 
 amino_start =[]
 amino_end=[]
 
-def sidechain(aminoxea, amino_name, atoma):
-    start=[]
-    end=[]
+def sidechain(amino_acid,A,B,atom_list,xyz_list):
+    start, end=[],[]
+    for x in range (len(A)):
+        for y in range(len(atom_list)):
+            if (A[x]==atom_list[y]):
+                start.append(xyz_list[y])
+            if (B[x]==atom_list[y]):
+                end.append(xyz_list[y])
+    return (start,end)
 
-    for i in range (len(amino_name)):
+def construct_sidechains(amino_list,atoms_name_list,atoms_xyz_list):
 
-        #GLN
-        if amino_name[i] == "GLN":
-            GLN_start = ["C","C","CA","CA","CB","CG","CD","CD"]
-            GLN_end = ["O","CA","N","CB","CG","CD","NE2","OE1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
+    for i in range (len(amino_list)):
+        amino_acid = sidechains_dict.get(amino_list[i])
+        if(amino_acid != None): #if the amino acid exists in the pdb exists in the current dictionary
+            A = amino_acid.get('A') #get the list of the first points of the AA
+            B = amino_acid.get('B') #get the list of the second points of the AA
+            atom_list = atoms_name_list[i]
+            xyz_list = atoms_xyz_list[i]
+
+            start, end= sidechain(amino_acid,A,B,atom_list,xyz_list)
+
             amino_start.append(start)
             amino_end.append(end)
-            start=[]
-            end=[]
+        else: error = "Amino Acid doesnt exist"
 
-
-        #GLU
-        if amino_name[i] == "GLU":
-            GLN_start = ["C","C","CA","CA","CB","CG","CD","CD"]
-            GLN_end = ["O","CA","N","CB","CG","CD","OE2","OE1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-        
-        #LYS
-        if amino_name[i] == "LYS":
-            GLN_start = ["C","C","CA","CA","CB","CG","CD","CE"]
-            GLN_end = ["O","CA","N","CB","CG","CD","CE","NZ"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-        
-                #LYS
-        if amino_name[i] == "ARG":
-            GLN_start = ["C","C","CA","CA","CB","CG","CD","NE","CZ","CZ"]
-            GLN_end = ["O","CA","N","CB","CG","CD","NE","CZ","NH1","NH2"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-            
-        if amino_name[i] == "ILE":
-            GLN_start = ["C","C","CA","CA","CB","CB","CG1"]
-            GLN_end = ["O","CA","N","CB","CG1","CG2","CD1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "SER":
-            GLN_start = ["C","C","CA","CA","CB"]
-            GLN_end = ["O","CA","N","CB","OG"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-            
-        if amino_name[i] == "VAL":
-            GLN_start = ["C","C","CA","CA","CB","CB"]
-            GLN_end = ["O","CA","N","CB","CG2","CG1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "HIS":
-            start=[]
-            end=[]
-            ##TODO: PROVLIMA>>> DEN KLEINEI I LOUPA... 
-            GLN_start = ["C","C","CA","CA","CB","CG","CG","CD2","CE1","ND1"]
-            GLN_end =   ["O","CA","N","CB","CG","ND1","CD2","NE2","NE2", "CE1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for x in range (len(GLN_start)):
-                for y in range(len(atoma[i])):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                    if (GLN_end[x]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-
-
-
-        if amino_name[i] == "GLY":
-            GLN_start = ["C","C","CA"]
-            GLN_end = ["O","CA","N"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-            
-            
-        if amino_name[i] == "LEU":
-            GLN_start = ["C","C","CA","CA","CB","CG","CG"]
-            GLN_end = ["O","CA","N","CB","CG","CD1","CD2"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "ALA":
-            GLN_start = ["C","C","CA","CA"]
-            GLN_end = ["O","CA","N","CB"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "ASN":
-            GLN_start = ["C","C","CA","CA","CB","CG","CG"]
-            GLN_end = ["O","CA","N","CB","CG","OD1","ND2"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "THR":
-            GLN_start = ["C","C","CA","CA","CB","CB"]
-            GLN_end = ["O","CA","N","CB","CG2","OG1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "THR":
-            GLN_start = ["C","C","CA","CA","CB","CB"]
-            GLN_end = ["O","CA","N","CB","CG2","OG1"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "PRO":
-            
-            #--> TODO it doesnt close. 
-            GLN_start = ["C","C","CA","CA","CB","CG","CD"]
-            GLN_end = ["O","CA","N","CB","CG","CD","N"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-        if amino_name[i] == "ASP":
-            
-            GLN_start = ["C","C","CA","CA","CB","CG","CG"]
-            GLN_end = ["O","CA","N","CB","CG","OD1","OD2"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-
-
-        if amino_name[i] == "TYR":
-            
-            ##TODO: PROVLIMA>>> DEN KLEINEI I LOUPA... 
-            GLN_start = ["C","C","CA","CA","CB","CG","CG","CD1","CD2","CE1","CE2","CZ"]
-            GLN_end =   ["O","CA","N","CB","CG","CD1","CD2","CE1","CE2","CZ","CZ","OH"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-
-        if amino_name[i] == "PHE":
-            
-            ##TODO: PROVLIMA>>> EDO KLEINEI I LOUPA... 
-            GLN_start = ["C","C","CA","CA","CB","CG","CG","CD1","CD2","CE1","CE2"]
-            GLN_end =   ["O","CA","N","CB","CG","CD1","CD2","CE1","CE2","CZ","CZ"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-
-        if amino_name[i] == "TRP":
-            
-            ##TODO: PROVLIMA>>> DEN KLEINEI I LOUPA... 
-            GLN_start = ["C","C","CA","CA","CB","CG","CG","CD1","CD2","NE1","CD2","CE2","CE3","CZ3","CH2"]
-            GLN_end =   ["O","CA","N","CB","CG","CD2","CD1","NE1","CE2","CE2","CE3","CZ2","CZ3","CH2","CZ2"]
-            #list of points in space for the starting points of lines of the GLN topology
-            for y in range(len(atoma[i])):
-                for x in range (len(GLN_start)):
-                    if (GLN_start[x]==atoma[i][y]):
-                        start.append(aminoxea[i][y])
-                for x1 in range (len(GLN_end)):
-                    if (GLN_end[x1]==atoma[i][y]):
-                        end.append(aminoxea[i][y])
-            amino_start.append(start)
-            amino_end.append(end)
-            start=[]
-            end=[]
-
-
-            #start=[aminoxea[i][2],aminoxea[i][2],aminoxea[i][1],aminoxea[i][1],aminoxea[i][4],aminoxea[i][5],aminoxea[i][6],aminoxea[i][6]]
-            #end=  [aminoxea[i][3],aminoxea[i][1],aminoxea[i][0],aminoxea[i][4],aminoxea[i][5],aminoxea[i][6],aminoxea[i][7],aminoxea[i][8]]
-            #amino_start.append(start)
-            #amino_end.append(end)
-            #for j in range (len (atoma)):
-                
-            #start.append()
-            #print (atoma[i])
-            #print (aminoxea[i])
-            #print (amino_name[i])
-            #print (amino_start)
-            #print(amino_end)
-    #        .....
 
 
 #Created By piac
@@ -427,11 +150,12 @@ def list_to_tree(input, none_and_holes=True, source=[0]):
                 elif item is not None: tree.Add(item,path)
     if input is not None: t=Tree[object]();proc(input,t,source[:]);return t
 
-#print (aminoxea)
-sidechain(aminoxea, amino_name, atoma)
-a= list_to_tree(aminoxea)
+#print (atoms_xyz_list)
+#sidechain(atoms_xyz_list, amino_names, atoms_name_list)
+construct_sidechains(amino_list,atoms_name_list,atoms_xyz_list)
+a= list_to_tree(atoms_xyz_list)
 start= list_to_tree(amino_start)
 end=list_to_tree(amino_end)
 
-#a= aminoxea
-#print (aminoxea)
+#a= atoms_xyz_list
+#print (atoms_xyz_list)
