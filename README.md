@@ -2,6 +2,8 @@
 
 
 <!--- just![CROP4](https://github.com/alan-turing-institute/CROP_unity/blob/master/Assets/media/crop_1.gif) --->
+![protein1](https://github.com/alan-turing-institute/protein_folding/blob/main/media/protein1.jpg)
+<!--- <img src="https://github.com/alan-turing-institute/protein_folding/blob/main/media/protein1.jpg" width="500" height="500"> --->
 
 # Summary
 
@@ -20,3 +22,4 @@ Visualise and explore protein structures across time. Incorporate vis of protein
 
 (*) Please look at minimum specifications for running Rhino [here](https://www.rhino3d.com/7/system-requirements/): 
 
+z
