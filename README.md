@@ -15,9 +15,10 @@ Visualise and explore protein structures across time. Incorporate vis of protein
 
 # Installation
 1. Download and install [Rhino3D](https://www.rhino3d.com/) v. 7 or higher*. 
-2. Load the visual editor grasshopper by typing "grasshopper" in the Rhino's command line.
+2. Download and install [Human UI](https://www.food4rhino.com/app/human-ui) for Rhino Grasshopper (If not already installed with Rhino)
 3. Clone this repository in your pc.
-4. Open or drag and drop the ProteinGenerator.gh file into grasshopper. 
+4. Load the visual editor grasshopper by typing "grasshopper" in the Rhino's command line.
+5. Open or drag and drop the ProteinGenerator.gh file into grasshopper. 
 
 
 (*) Please look at minimum specifications for running Rhino [here](https://www.rhino3d.com/7/system-requirements/): 
