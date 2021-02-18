@@ -11,7 +11,11 @@ Visualise and explore protein structures across time. Incorporate vis of protein
 
 
 # Key Functionalities
-
+Visualise any PDB file and create interpolation between two states.
+Create custom slices of chains of Amino Acids.
+Visualise Heavy water data
+Configure protein visualisations (3 LODs)
+Animate between 2 states
 
 # Installation
 1. Download, create an account and install [Rhino3D](https://www.rhino3d.com/) v. 7 or higher*. 
