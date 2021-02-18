@@ -24,4 +24,3 @@ Visualise and explore protein structures across time. Incorporate vis of protein
 (*) There is a 3 month trial version available for Rhino, which you can download for free. 
 Please look at minimum specifications for running Rhino [here](https://www.rhino3d.com/7/system-requirements/): 
 
-z
