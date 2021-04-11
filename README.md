@@ -30,6 +30,7 @@ Please look at minimum specifications for running Rhino [here](https://www.rhino
 
 # Quick Start guide
 
+To change the appearence of icons in GH, go from the main menu to display-->draw icons
 
 ## Wiki
 Look at the [wiki](https://github.com/alan-turing-institute/protein_folding/wiki) for documentation on what are the different scripts and how to configure the platform
