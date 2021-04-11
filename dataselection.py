@@ -21,7 +21,7 @@ for i in range(selection.BranchCount):
             subOutput.append(Lists[number])
     output.append(subOutput)
 
-#Created By piac
+
 #from https://gist.github.com/piac/ef91ac83cb5ee92a1294
 def list_to_tree(input, none_and_holes=True, source=[0]):
     """Transforms nestings of lists or tuples to a Grasshopper DataTree"""
