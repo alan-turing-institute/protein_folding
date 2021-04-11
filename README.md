@@ -19,7 +19,7 @@ Animate between 2 states
 
 # Installation
 1. Download, create an account and install [Rhino3D](https://www.rhino3d.com/) v. 7 or higher*. 
-2. Download and install [Human UI](https://www.food4rhino.com/app/human-ui) for Rhino Grasshopper (If not already installed with Rhino)
+2. Download and install [Human UI](https://www.food4rhino.com/app/human-ui) for Rhino Grasshopper (If not already installed with Rhino) NOTE!: Human UI does not work for Mac
 3. Clone this repository in your pc.
 4. Load the visual editor grasshopper by typing "grasshopper" in the Rhino's command line.
 5. Open or drag and drop the ProteinGenerator.gh file into grasshopper. 
