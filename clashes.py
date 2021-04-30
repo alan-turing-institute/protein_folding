@@ -36,19 +36,17 @@ def CalcDistance(p1, p2):
     dist = math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2 + (p2[2]-p2[2])**2)
     return(dist)
 
-
-
-def LennardJones (e, s, r):
+def LennardJones (e, s, p1, p2):
     """
     Archetype model for simple yet realistic intermolecular interactions
     e: dispersion energy
     s: distance at which the particle-particle potential energy V is zero 
     (size of the particle) TODO: add list of molecules //usual s = 0.34nm
-    r: distance between molecules
+    p1,p2: centroid coordinates of two molecules
     
     V: potential energy
     """
-
+    r = CalcDistance(p1,p2)
     V = 4*e*((s/r)**12 - (s/r)**6)
     return V
 
@@ -67,8 +65,7 @@ def CheckClash(xyz_str, xyz, thold, e):
     error = 0
     for i in range (len(xyz)):
         for j in range (i+1, len(xyz)):
-            dist = CalcDistance(xyz[i],xyz[j])
-            V = LennardJones (e,thold,dist)
+            V = LennardJones (e,thold,xyz[i],xyz[j]) #TODO: replace thold with s
             if (V > thold):
                 c.append(xyz_str[i])
                 id.append(str(i))
@@ -76,6 +73,7 @@ def CheckClash(xyz_str, xyz, thold, e):
     if (error == 1):
         ErrorGh("Clash: ", id[0])
     return(set(c), set(id))
+
 
 def CheckBreak(xyz_str, xyz, thold):
     """
