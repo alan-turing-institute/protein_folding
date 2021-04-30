@@ -36,11 +36,29 @@ def CalcDistance(p1, p2):
     dist = math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2 + (p2[2]-p2[2])**2)
     return(dist)
 
-def CheckClash(xyz_str, xyz,thold):
+
+
+def LennardJones (e, s, r):
+    """
+    Archetype model for simple yet realistic intermolecular interactions
+    e: dispersion energy
+    s: distance at which the particle-particle potential energy V is zero 
+    (size of the particle) TODO: add list of molecules //usual s = 0.34nm
+    r: distance between molecules
+    
+    V: potential energy
+    """
+
+    V = 4*e*((s/r)**12 - (s/r)**6)
+    return V
+
+
+def CheckClash(xyz_str, xyz, thold, e):
     """
     Fuction to check for clashes by calculating minimum distance between each AA
     xyz_str: (str) list of xyz coordinates for gh output
     xyz: (f) a list of xyz coordinates
+    
     thold: (f) minimum distance threshold for a clash between two AA
     
     id, c: list of unique index and coordinates of clashed AA
@@ -50,13 +68,14 @@ def CheckClash(xyz_str, xyz,thold):
     for i in range (len(xyz)):
         for j in range (i+1, len(xyz)):
             dist = CalcDistance(xyz[i],xyz[j])
-            if (dist < thold):
+            V = LennardJones (e,thold,dist)
+            if (V > thold):
                 c.append(xyz_str[i])
                 id.append(str(i))
                 error=1
     if (error == 1):
         ErrorGh("Clash: ", id[0])
-        return(set(c), set(id))
+    return(set(c), set(id))
 
 def CheckBreak(xyz_str, xyz, thold):
     """
@@ -78,7 +97,7 @@ def CheckBreak(xyz_str, xyz, thold):
                 error=1
     if (error == 1):
         ErrorGh("Break: ", id[0])
-        return (set(b), set(id))
+    return (set(b), set(id))
 
 def ErrorGh(m, d) :
     """
@@ -87,8 +106,7 @@ def ErrorGh(m, d) :
     e = gh.GH_RuntimeMessageLevel.Error
     ghenv.Component.AddRuntimeMessage(e, m + str(d))
 
-
 if __name__ == "__main__": 
     xyz = SplitCoordinates(CA_xyz)
-    clash, cls_id = CheckClash(CA_xyz, xyz, clash_th)
+    clash, cls_id = CheckClash(CA_xyz, xyz, clash_th, e)
     breakbond, brk_id = CheckBreak(CA_xyz, xyz, break_th)
