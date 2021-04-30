@@ -1,4 +1,4 @@
-﻿"""Module to calculate Energy Clashes of AA in pdb files in Proteins .
+﻿"""Module to calculate Energy and find Clashes of AA in pdb files in Proteins .
     Inputs:
         CA_xyz: list (str) of xyz cooridnates of CA
         clash_th: (float) clash threshhold
@@ -17,53 +17,78 @@ import math
 import Grasshopper.Kernel as gh
 
 
+def SplitCoordinates(xyz_str):
+    """
+    Function to split coord. str in float list
+    xyz_str: (str) a list input of "x,y,z" coordinates
+    """
+    xyz = []
+    for i in range (len(xyz_str)):
+        x_,y_,z_ = xyz_str[i].split(",")
+        xyz.append([float(x_),float(y_),float(z_)])
+    return(xyz)
 
-x,y,z = [],[],[]
-c,b, = [],[]
-#clash_th = 3.75
-#break_th = 5
+def CalcDistance(p1, p2):
+    """
+    Function to calculate distance in space between two points (p)
+    p1, p2: (f) lists of coordinates for point1 and point2
+    """
+    dist = math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2 + (p2[2]-p2[2])**2)
+    return(dist)
 
-def SplitCoordinates(xyz):
-    for i in range (len(xyz)):
-        x1,y1,z1 = xyz[i].split(",")
-        x.append(float(x1))
-        y.append(float(y1))
-        z.append(float(z1))
-
-def CheckClash(xyz,x,y,z):
+def CheckClash(xyz_str, xyz,thold):
+    """
+    Fuction to check for clashes by calculating minimum distance between each AA
+    xyz_str: (str) list of xyz coordinates for gh output
+    xyz: (f) a list of xyz coordinates
+    thold: (f) minimum distance threshold for a clash between two AA
+    
+    id, c: list of unique index and coordinates of clashed AA
+    """
+    c, id = [], []
     error = 0
-    for i in range (len(CA_xyz)):
-        for j in range (len(CA_xyz)):
-            if (i != j):
-                dist = math.sqrt((x[j]-x[i])**2 + (y[j]-y[i])**2 + (z[j]-z[i])**2)
-                if (dist < clash_th):
-                    c.append(CA_xyz[i])
-                    error=1
+    for i in range (len(xyz)):
+        for j in range (i+1, len(xyz)):
+            dist = CalcDistance(xyz[i],xyz[j])
+            if (dist < thold):
+                c.append(xyz_str[i])
+                id.append(str(i))
+                error=1
     if (error == 1):
-        print clash
-        Error1("Clash: ", CA_xyz[0])
-        return(set(c))
+        ErrorGh("Clash: ", id[0])
+        return(set(c), set(id))
 
-
-def CheckBreak(xyz,x,y,z):
+def CheckBreak(xyz_str, xyz, thold):
+    """
+    Function to check for bond breaks by calculating max distance between each AA
+    xyz_str: (str) list of xyz coordinates for gh output
+    xyz: (f) list of xyz coordinates of AA
+    thold: (f) maximum distance threshold for a break between two AA
+    
+    id, b: list of unique index and coordinates of break bond in AA
+    """
+    b, id = [], []
     error = 0
     for i in range (len(xyz)):
         if (i+1 < len(xyz)):
-            dist = math.sqrt((x[i+1]-x[i])**2 + (y[i+1]-y[i])**2 + (z[i+1]-z[i])**2)
-            if (dist > break_th):
-                b.append(CA_xyz[i])
+            dist = CalcDistance(xyz[i],xyz[i+1])
+            if (dist > thold):
+                b.append(xyz_str[i])
+                id.append(str(i))
                 error=1
     if (error == 1):
-        Error1("Break: ", CA_xyz[0])
-        return (set(b))
+        ErrorGh("Break: ", id[0])
+        return (set(b), set(id))
 
-        
-def Error1(m, d) :
+def ErrorGh(m, d) :
+    """
+    Produces Grasshopper(gh) error and breaks the module
+    """
     e = gh.GH_RuntimeMessageLevel.Error
     ghenv.Component.AddRuntimeMessage(e, m + str(d))
 
 
 if __name__ == "__main__": 
-    SplitCoordinates(CA_xyz)
-    clash = CheckClash(CA_xyz,x,y,z)
-    breakbond = CheckBreak(CA_xyz,x,y,z)
+    xyz = SplitCoordinates(CA_xyz)
+    clash, cls_id = CheckClash(CA_xyz, xyz, clash_th)
+    breakbond, brk_id = CheckBreak(CA_xyz, xyz, break_th)
