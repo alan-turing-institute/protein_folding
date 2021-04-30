@@ -3,7 +3,7 @@
         CA_xyz: list (str) of xyz cooridnates of CA
         clash_th: (float) clash threshhold
         break_th: (float) break threshold
-        TODO: AA_name: list(str) of AA
+        AA_name: list(str) of AA
 
     Output:
         clash: a list of AA coord of clashes
