@@ -16,6 +16,7 @@ import rhinoscriptsyntax as rs
 import math 
 import Grasshopper.Kernel as gh
 
+print AA_name
 
 def SplitCoordinates(xyz_str):
     """
@@ -106,5 +107,5 @@ def ErrorGh(m, d) :
 
 if __name__ == "__main__": 
     xyz = SplitCoordinates(CA_xyz)
-    clash, cls_id = CheckClash(CA_xyz, xyz, clash_th, e)
+    clash, cls_id = CheckClash(CA_xyz, xyz, LJsigma, LJepsilon)
     breakbond, brk_id = CheckBreak(CA_xyz, xyz, break_th)
