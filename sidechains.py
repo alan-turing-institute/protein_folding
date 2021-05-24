@@ -1,4 +1,4 @@
-﻿"""Provides a scripting component.
+﻿"""Script that create the sidechains of the AA from PDB files
     Inputs:
         AA: Amino Acid names
         AA_name: The y script variable
