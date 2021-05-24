@@ -58,11 +58,13 @@ def CheckClash(xyz_str, xyz, thold, e):
     xyz_str: (str) list of xyz coordinates for gh output
     xyz: (f) a list of xyz coordinates
     
+    e: LJ dispersion energy
     thold: (f) minimum distance threshold for a clash between two AA
     
     id, c: list of unique index and coordinates of clashed AA
     """
     c, id = [], []
+   #append i and j to couple the 
     error = 0
     for i in range (len(xyz)):
         for j in range (i+1, len(xyz)):
@@ -87,13 +89,12 @@ def CheckBreak(xyz_str, xyz, thold):
     """
     b, id = [], []
     error = 0
-    for i in range (len(xyz)):
-        if (i+1 < len(xyz)):
-            dist = CalcDistance(xyz[i],xyz[i+1])
-            if (dist > thold):
-                b.append(xyz_str[i])
-                id.append(str(i))
-                error=1
+    for i in range (len(xyz)-1):
+        dist = CalcDistance(xyz[i],xyz[i+1])
+        if (dist > thold):
+            b.append(xyz_str[i])
+            id.append(str(i))
+            error=1
     if (error == 1):
         ErrorGh("Break: ", id[0])
     return (set(b), set(id))
@@ -107,5 +108,5 @@ def ErrorGh(m, d) :
 
 if __name__ == "__main__": 
     xyz = SplitCoordinates(CA_xyz)
-    clash, cls_id = CheckClash(CA_xyz, xyz, LJsigma, LJepsilon)
+    clash, cls_id = CheckClash(CA_xyz, xyz, clash_th, e)
     breakbond, brk_id = CheckBreak(CA_xyz, xyz, break_th)
