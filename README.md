@@ -34,3 +34,5 @@ To change the appearence of icons in GH, go from the main menu to display-->draw
 
 ## Wiki
 Look at the [wiki](https://github.com/alan-turing-institute/protein_folding/wiki) for documentation on what are the different scripts and how to configure the platform
+
+[Hut23 issue](https://github.com/alan-turing-institute/Hut23/issues/368)
