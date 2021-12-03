@@ -6,6 +6,8 @@
 !*/Climber/*.txt
 RUN101
 old
+*/outputs/*/*.pdb
+
 
 
 # Byte-compiled / optimized / DLL files

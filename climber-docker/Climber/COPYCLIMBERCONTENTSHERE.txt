@@ -1,1 +1,11 @@
 Copy Climber contents here
+
+States:
+        if(lines[0]=="docker running"):
+            run="docker running"
+        elif(lines[0]=="docker finished"):
+            run="docker finished"
+        elif (lines[0]=="grasshopper running"):
+            run="grasshopper running"
+        elif (lines[0]=="grasshopper finished"):
+            run="grasshopper finished"
