@@ -12,6 +12,10 @@ RUN dpkg --add-architecture i386
 RUN apt-get update
 RUN apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g:i386
 
+# Install Cron
+#RUN apt-get install cron -y && apt-get install vim -y
+# Crontab file copied to cron.d directory.
+#COPY cronjob /etc/cron.d/container_cronjob
 
 # In order to launch our python code, we must import it into our image.
 # We use the keyword 'COPY' to do that.
@@ -21,11 +25,16 @@ RUN apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g:i386
 COPY Climber /usr/src/Climber
 ENV CLIMBERDIR=/usr/src/Climber
 
-COPY config.sh /usr/src/
+# configures the container to run as an executable
+#ENTRYPOINT ["/run.sh"]
 
 
-RUN /usr/src/config.sh
-RUN bash /usr/src/config.sh
+#COPY config.sh /usr/src/
+
+
+#RUN /usr/src/config.sh
+#RUN bash /usr/src/config.sh
+
 # COPY RUN101 /usr/src/Climber/examples/RUN101
 
 
