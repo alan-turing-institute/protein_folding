@@ -9,25 +9,257 @@ Could not open file "simmat.structal" so use indentity matrix for simmat.
  There are      2 files to be compared 
  Set "lprint" on as comparing a pair of proteins
  lprint = T, ldebug = F
+ Too many atoms in structure. natom = 20000
      1     3  -837  1138   302 omit
-     1     4 -1140  1671   532 omit
 
-Molecule 1 has   836 CA or CB atoms for: GlyP_G6P.pdb
-     2     2  -837  1671   835 omit
+Molecule 1 has   932 CA or CB atoms for: GlyP_G6P.pdb
+ Too many atoms in structure. natom = 20000
 
-Molecule 2 has   835 CA or CB atoms for: GlyP_AMP.pdb
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Limit number of atoms to  1000
+Molecule 2 has  1232 CA or CB atoms for: GlyP_AMP.pdb
 
  Best match has total score =   100 and log_p_value =   10000.00 for method _AMP    
- Number of breaks =     0, Number of equivalences =   835 after elim., nentry =   835 before.
- RMS is    5.319 A, for  835 equivalenced C-alpha pairs.
- First protein has   836 CA atoms.  Second protein has   835
+ Number of breaks =     0, Number of equivalences =   932 after elim., nentry =   932 before.
+ RMS is   12.403 A, for  932 equivalenced C-alpha pairs.
+ First protein has   932 CA atoms.  Second protein has  1232
 
  new x2 = xbar1 + [r2to1](x2 - xbar2) 
- rms    5.32 centroid 1 is   46.53303   -.57589  27.22204
-             centroid 2 is   45.96518   -.39800  27.37761
- transformation matrix from 2 to 1    .9975874  .0002117  .0694210
-                                     -.0012235  .9998937  .0145327
-                                     -.0694105 -.0145826  .9974816
+ rms   12.40 centroid 1 is   48.17664  -1.96947  30.93508
+             centroid 2 is   48.18335   1.59481  32.31266
+ transformation matrix from 2 to 1    .9964582  .0825666  .0159298
+                                     -.0767984  .9707409 -.2275171
+                                     -.0342490  .2254879  .9736438
 
 %% GlyP_G6P        1  Q E K R K Q I S V R G L A G V E N V T E L K K N F N R H L H
 %% equiv           1  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -137,18 +369,74 @@ Molecule 2 has   835 CA or CB atoms for: GlyP_AMP.pdb
 %% equiv         781  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 %% GlyP_AMP      781  V S A L Y K N P R E W T R M V I R N I A T S G K F S S D R T
 
-%% GlyP_G6P      811  I A Q Y A R E I W G V E P S R Q R L P A P D E K I X
-%% equiv         811  | | | | | | | | | | | | | | | | | | | | | | | | |  
-%% GlyP_AMP      811  I A Q Y A R E I W G V E P S R Q R L P A P D E K I  
+%% GlyP_G6P      811  I A Q Y A R E I W G V E P S R Q R L P A P D E K I X Q E K R
+%% equiv         811  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+%% GlyP_AMP      811  I A Q Y A R E I W G V E P S R Q R L P A P D E K I X Q E K R
 
-%_ LONGEST STRETCH:          2  837  835 GlyP_G6P        2  837  835 GlyP_AMP    
+%% GlyP_G6P      841  K Q I S V R G L A G V E N V T E L K K N F N R H L H F T L V
+%% equiv         841  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+%% GlyP_AMP      841  K Q I S V R G L A G V E N V T E L K K N F N R H L H F T L V
+
+%% GlyP_G6P      871  K D R N V A T P R D Y Y F A L A H T V R D H L V G R W I R T
+%% equiv         871  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+%% GlyP_AMP      871  K D R N V A T P R D Y Y F A L A H T V R D H L V G R W I R T
+
+%% GlyP_G6P      901  Q Q H Y Y E K D P K R I Y Y L S L E F Y M G R T L Q N T M V
+%% equiv         901  | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+%% GlyP_AMP      901  Q Q H Y Y E K D P K R I Y Y L S L E F Y M G R T L Q N T M V
+
+%% GlyP_G6P      931  N L                                                        
+%% equiv         931  | |                                                        
+%% GlyP_AMP      931  N L A L E N A C D E A T Y Q L G L D M E E L E E I E E D A G
+
+%% GlyP_G6P      961                                                             
+%% equiv         961                                                             
+%% GlyP_AMP      961  L G N G G L G R L A A C F L D S M A T L G L A A Y G Y G I R
+
+%% GlyP_G6P      991                                                             
+%% equiv         991                                                             
+%% GlyP_AMP      991  Y E F G I F N Q K I C G G W Q M E E A D D W L R Y G N P W E
+
+%% GlyP_G6P     1021                                                             
+%% equiv        1021                                                             
+%% GlyP_AMP     1021  K A R P E F T L P V H F Y G R V E H T S Q G A K W V D T Q V
+
+%% GlyP_G6P     1051                                                             
+%% equiv        1051                                                             
+%% GlyP_AMP     1051  V L A M P Y D T P V P G Y R N N V V N T M R L W S A K A P N
+
+%% GlyP_G6P     1081                                                             
+%% equiv        1081                                                             
+%% GlyP_AMP     1081  D F N L K D F N V G G Y I Q A V L D R N L A E N I S R V L Y
+
+%% GlyP_G6P     1111                                                             
+%% equiv        1111                                                             
+%% GlyP_AMP     1111  P N D N F F E G K E L R L K Q E Y F V V A A T L Q D I I R R
+
+%% GlyP_G6P     1141                                                             
+%% equiv        1141                                                             
+%% GlyP_AMP     1141  F K S S K F G C R D P V R T N F D A F P D K V A I Q L N D T
+
+%% GlyP_G6P     1171                                                             
+%% equiv        1171                                                             
+%% GlyP_AMP     1171  H P S L A I P E L M R V L V D L E R L D W D K A W E V T V K
+
+%% GlyP_G6P     1201                                                             
+%% equiv        1201                                                             
+%% GlyP_AMP     1201  T C A Y T N H T V L P E A L E R W P V H L L E T L L P R H L
+
+%% GlyP_G6P     1231     
+%% equiv        1231     
+%% GlyP_AMP     1231  Q I
+
+%_ LONGEST STRETCH:          2  934  932 GlyP_G6P        2  934  932 GlyP_AMP    
 
 GlyP_G6P    GlyP_AMP        Calpha    Main    Side    Both
- The overall rms value is    5.31929, for  835 CA atoms 
- The overall rms value is    5.21093, for 2505 main-chain atoms 
- The overall rms value is    6.28757, for 3459 side-chain atoms 
- The overall rms value is    5.79587, for 6799 all atoms 
+ The overall rms value is   12.40300, for  932 CA atoms 
+ The overall rms value is   12.34464, for 2796 main-chain atoms 
+ The overall rms value is   10.88283, for 3635 side-chain atoms 
+ The overall rms value is   11.65376, for 7363 all atoms 
 
-%   1 GlyP_G6P .. GlyP_AMP.pdb    835  5.319  1.234    .00   0   835    .00
+%   1 GlyP_G6P .. GlyP_AMP.pdb    932 12.403  2.615    .00   0  1232    .00
 ok if p_value less than 0.005
-%_ bad    1 GlyP_G6P .. GlyP_AMP.pdb    836 835,   835   5.32    .64,  835   5.32,    0  100,    .00    .00,        INF       inf
+%_ bad    1 GlyP_G6P .. GlyP_AMP.pdb    9321232,   932  12.40   1.33,  932  12.40,    0  100,    .00    .00,        INF       inf
