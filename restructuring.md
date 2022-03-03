@@ -124,9 +124,22 @@ pdb_merge chain_b.pdb chain_a.pdb | pdb_tidy -strict > two_short_chains_reverse.
 
 
 # Create single chain with fake geometry
-# Takes chemical data from `chain_a.pdb` and geometry from `chain_b` and outputs a new file:
+# Takes chemical data from `chain_a.pdb` and geometry from `chain_b.pdb` and outputs a new file:
 python create_fake_geom.py chain_a.pdb chain_b.pdb | pdb_tidy -strict > single_short_chain_geom_fake.pdb 
 pdb_tidy -strict chain_a.pdb > single_short_chain_geom_real.pdb 
 
+
+# Create a new chain (by arbitarily removing oxygen from chain-a).
+pdb_tidy GlyP_AMP.pdb | pdb_selchain -B | pdb_delelem -O | pdb_head -10 | pdb_tidy -strict > chain_c.pdb
+pdb_merge chain_a.pdb chain_c.pdb | pdb_tidy -strict > two_short_chains_diff_atoms.pdb
+
+
+# Create files each with two chains. One chain in one file has extra hydrogens
+pdb_tidy -strict GlyP_AMP_extra_hydrogens.pdb | pdb_selchain -A | pdb_delelem -H | pdb_head -20 | pdb_tidy -strict > chain_ha1.pdb
+pdb_tidy -strict GlyP_AMP_extra_hydrogens.pdb | pdb_selchain -A | pdb_head -35 | pdb_tidy -strict > chain_ha2.pdb
+pdb_tidy -strict GlyP_AMP_extra_hydrogens.pdb | pdb_selchain -B | pdb_head -20 | pdb_tidy -strict > chain_hb.pdb
+pdb_tidy -strict GlyP_AMP_extra_hydrogens.pdb | pdb_selchain -B | pdb_delelem -H | pdb_head -20 | pdb_tidy -strict > chain_hb.pdb
+pdb_merge chain_ha1.pdb chain_hb.pdb | pdb_tidy -strict > two_chains.pdb
+pdb_merge chain_ha2.pdb chain_hb.pdb | pdb_tidy -strict > two_chains_extra_hydrogen.pdb
 
 
