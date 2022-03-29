@@ -7,10 +7,6 @@ import grasshopper_controller
 import climber_controller
 # from icecream import ic
 
-# The abs path to the grasshopper file with the loop logic
-# grasshopper_fpath = path.join(path.dirname(path.realpath(__file__)), "gh_loop_with_cli.gh")
-
-
 _cli_defaults_fname = 'cli_defaults.cfg'
 _loop_params_fname = '_loop_params.cfg'
 
@@ -72,21 +68,14 @@ def _get_cli_args():
               ' * That the Climber Docker image has been downloaded from Docker Hub.' )
     )
 
+    mainparser.add_argument(
+        '--pull-docker-image',
+        action='store_true',
+        help=('Downloads the Climber Docker image specified in `cli_defaults.cfg` from Docker Hub.' )
+    )
+
     return mainparser
 
-
-# def _entry_point():
-#     mainparser = _get_cli_args()
-#     args = mainparser.parse_args()
-#     try:
-#         args.func(args)
-#     except AttributeError:
-#         print('here')
-#         mainparser.print_usage()
-
-
-
-###########################################################
 
 def write_cli_defaults_file():
     """
@@ -101,19 +90,27 @@ def write_cli_defaults_file():
     cli_defaults.add_section('climber')
     cli_defaults.set('climber', 'docker_credentials', "C:/Program Files/Docker/Docker/resources/bin/docker-credential-wincred.exe")
     cli_defaults.set('climber', 'docker_username', 'climberapp')
-    cli_defaults.set('climber', 'docker_image', 'climberapp/climber-test:latest')
+    cli_defaults.set('climber', 'docker_image_name', 'climberapp/climber-test')
+    cli_defaults.set('climber', 'docker_image_ver', 'latest')
 
-    cli_defaults_fpath = path.join(path.dirname(path.realpath(__file__)), _cli_defaults_fname)
+    cli_defaults.add_section('shared')
+    cli_defaults.set('shared', 'shared_dir', 'RUN101')
+
+    cli_defaults_fpath = get_cli_defaults_fpath()
     #    _config_fpath = path.join(rs.DocumentPath(), '_loop_params.cfg')
 
     with open(cli_defaults_fpath, 'wb') as cli_defaults_file:
         cli_defaults.write(cli_defaults_file)
 
 
+def get_cli_defaults_fpath():
+    return path.join(path.dirname(path.realpath(__file__)), _cli_defaults_fname)
+
+
 def read_cli_defaults_file():
     cli_defaults = ConfigParser.RawConfigParser()
 
-    _config_fpath = path.join(path.dirname(path.realpath(__file__)), _cli_defaults_fname)
+    _config_fpath = get_cli_defaults_fpath()
 
     try:
         with open(_config_fpath, 'rb') as cli_defaults_file:
@@ -161,6 +158,36 @@ def read_gh_args_files():
     return (input_pdb, input_csv, experiment_id)
 
 
+def get_host_shared_dir_path(cli_defaults):
+    shared_dir_name = cli_defaults.get('shared', 'shared_dir')
+    host_shared_dir_path = path.abspath(path.join(path.dirname(get_cli_defaults_fpath()), shared_dir_name))
+    if path.exists(host_shared_dir_path) and path.isdir(host_shared_dir_path):
+        return host_shared_dir_path
+
+    raise ValueError('ERROR: Cannot locate shared directory. Directory does not exist:'
+                     '\n{}'.format(host_shared_dir_path))
+
+def check_file_param_is_valid(file_name, cli_defaults):
+    """
+    If `file_name` is relative then assume that it is relative to the shared dir and check it exists.
+    If `file_name` is absolute then check it both exists and is inside the shared dir
+    """
+    host_shared_dir_path = get_host_shared_dir_path(cli_defaults)
+
+    # Check
+    if path.isabs(file_name):
+        abs_fpath = file_name
+    else:
+        abs_fpath = path.abspath(path.join(host_shared_dir_path, file_name))
+
+    common_root = path.abspath(path.commonprefix([host_shared_dir_path, abs_fpath]))
+    if common_root != host_shared_dir_path:
+        raise ValueError('ERROR: The file `{}` is not within the shared directory `{}`.'
+                         ' Hence it cannot be made available to both GrassHopper and Climber.'.format(
+                             file_name, host_shared_dir_path
+                         ))
+
+
 if __name__ == "__main__":
 
     mainparser = _get_cli_args()
@@ -187,15 +214,27 @@ if __name__ == "__main__":
         except (ValueError, ConfigParser.Error) as ve:
             print(ve)
             exit(2)
-        pass
 
-    # Assume that we acctually want to do something useful here
+    if args.pull_docker_image:
+        try:
+            climber_controller.pull_climber_docker_image(cli_defaults)
+            exit(0)
+        except (ValueError, ConfigParser.Error) as ve:
+            print(ve)
+            exit(3)
+
+    # Assume that we actually want to do something useful here
     # Check that both `--input-pdb` and `--input-csv` have been specificed
     if args.input_pdb and args.input_csv and args.experiment_id:
         print('Yay! let do something useful here!')
+
+        check_file_param_is_valid(args.input_pdb, cli_defaults)
+        check_file_param_is_valid(args.input_csv, cli_defaults)
+
         write_gh_args_file(args.input_pdb, args.input_csv, args.experiment_id)
+        container_id = climber_controller.launch_climber(cli_defaults)
         grasshopper_controller.launch_grasshopper(cli_defaults)
-        climber_controller.launch_climber(cli_defaults)
+        climber_controller.stop_background_docker(container_id)
         exit(0)
 
     print('Oh - probably missing one or more required parameters.')
