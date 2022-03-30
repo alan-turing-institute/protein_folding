@@ -73,8 +73,13 @@ def launch_grasshopper(cli_defaults):
         grasshopper_fpath
     )
 
+    # full_cmd = '"{}" /nosplash /runscript="-Grasshopper {}" /notemplate'.format(
+    #     rhino_fpath,
+    #     grasshopper_fpath
+    # )
+
     # Now lauch Rhino itself
-    chdir(rhino_dir)
+    # chdir(rhino_dir)
     rhino_output = subprocess.check_output(full_cmd, shell=False)
     print('rhino_output=\n')
     print(rhino_output)

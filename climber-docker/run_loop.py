@@ -9,6 +9,7 @@ import climber_controller
 
 _cli_defaults_fname = 'cli_defaults.cfg'
 _loop_params_fname = '_loop_params.cfg'
+_state_fname = 'state.txt'
 
 
 def parse_cli_args():
@@ -23,9 +24,15 @@ def _get_cli_args():
     )
 
     mainparser.add_argument(
-        '--input-pdb',
-        metavar='Input PDB file',
-        help=('The Input PDB file.')
+        '--initial-pdb',
+        metavar='A PDB file representing the *initial* state of the protein.',
+        help=('A PDB file representing the *initial* state of the protein.')
+    )
+
+    mainparser.add_argument(
+        '--target-pdb',
+        metavar='A PDB file representing the *target* state of the protein.',
+        help=('A PDB file representing the *target* state of the protein.')
     )
 
     mainparser.add_argument(
@@ -40,6 +47,11 @@ def _get_cli_args():
         help=('The Experiment ID.')
     )
 
+    mainparser.add_argument(
+        '--climber-steps',
+        metavar='Number of steps Climber should use per iteration',
+        help=('Number of steps Climber should use per iteration. Passed as a parameter to `morphx.sh`')
+    )
 
     mainparser.add_argument(
         '--check-cli-defaults',
@@ -123,10 +135,11 @@ def read_cli_defaults_file():
     return cli_defaults
 
 
-def write_gh_args_file(input_pdb, input_csv, experiment_id):
+def write_gh_args_file(initial_pdb, target_pdb, input_csv, experiment_id):
     config = ConfigParser.RawConfigParser()
     config.add_section('InputFiles')
-    config.set('InputFiles', 'input_pdb', input_pdb)
+    config.set('InputFiles', 'initial_pdb', initial_pdb)
+    config.set('InputFiles', 'target_pdb', target_pdb)
     config.set('InputFiles', 'input_csv', input_csv)
     config.set('InputFiles', 'experiment_id', experiment_id)
     config.add_section('OutputFiles')
@@ -151,11 +164,12 @@ def read_gh_args_files():
     with open(_config_fpath, 'rb') as param_file:
         config.readfp(param_file)
         print(config.sections())
-        input_pdb = config.get('InputFiles', 'input_pdb')
+        initial_pdb = config.get('InputFiles', 'initial_pdb')
+        target_pdb = config.get('InputFiles', 'target_pdb')
         input_csv = config.get('InputFiles', 'input_csv')
         experiment_id = config.get('InputFiles', 'experiment_id')
 
-    return (input_pdb, input_csv, experiment_id)
+    return (initial_pdb, target_pdb, input_csv, experiment_id)
 
 
 def get_host_shared_dir_path(cli_defaults):
@@ -186,6 +200,14 @@ def check_file_param_is_valid(file_name, cli_defaults):
                          ' Hence it cannot be made available to both GrassHopper and Climber.'.format(
                              file_name, host_shared_dir_path
                          ))
+
+
+def reset_state_flag(cli_defaults):
+    host_shared_dir_path = get_host_shared_dir_path(cli_defaults)
+    state_fpath = path.abspath(path.join(host_shared_dir_path, _state_fname))
+
+    with open(state_fpath, "w") as state_file:
+        state_file.writelines(["start"])
 
 
 if __name__ == "__main__":
@@ -225,16 +247,18 @@ if __name__ == "__main__":
 
     # Assume that we actually want to do something useful here
     # Check that both `--input-pdb` and `--input-csv` have been specificed
-    if args.input_pdb and args.input_csv and args.experiment_id:
+    if args.initial_pdb and args.target_pdb and args.input_csv and args.experiment_id:
         print('Yay! let do something useful here!')
 
-        check_file_param_is_valid(args.input_pdb, cli_defaults)
+        check_file_param_is_valid(args.initial_pdb, cli_defaults)
+        check_file_param_is_valid(args.target_pdb, cli_defaults)
         check_file_param_is_valid(args.input_csv, cli_defaults)
 
-        write_gh_args_file(args.input_pdb, args.input_csv, args.experiment_id)
-        container_id = climber_controller.launch_climber(cli_defaults)
+        write_gh_args_file(args.initial_pdb, args.target_pdb, args.input_csv, args.experiment_id)
+        # container_id = climber_controller.launch_climber(cli_defaults)
+        reset_state_flag(cli_defaults)
         grasshopper_controller.launch_grasshopper(cli_defaults)
-        climber_controller.stop_background_docker(container_id)
+        # climber_controller.stop_background_docker(container_id)
         exit(0)
 
     print('Oh - probably missing one or more required parameters.')
