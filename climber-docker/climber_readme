@@ -1,0 +1,188 @@
+              Climber v1.0
+                =============
+
+Platform:
+=========
+Climber_v1.0_2008.tgz Runs on Linux only.
+Climber_v1.0_4Mac_2008.tgz Runs on Mac OSX only.
+
+
+Description:
+============
+This is Climber.
+Use this executable to morph between two PDB structures.
+
+Why use Climber?
+1. All intermediate structures are physically feasible.
+2. Allows the user to control the number of steps in the interpolation,
+3. Allows the user to specify which C-alpha atoms to use in the interpolation.
+4. Structures need not have the same number of residues, or even the
+   same sequence. Becuase the user specifies which atoms to use in the
+   interpolation, any two structures of any two proteins can be morphed.
+5. Produces a non-linear interpolation that can move around rather than
+   over high-energy barriers.
+
+Usage:
+======
+(1) Download Climber_v1.0_2008.tgz and unzip the file
+    tar xzvf Climber_v1.0_2008.tgz
+
+
+(2) Set $CLIMBERDIR to point to the top directory (ex. /usr/src/Climber/)
+
+Examples:
+=========
+IMPORTANT: You must set the environment variable CLIMBERDIR
+           or edit the scripts to reflect the correct path
+           to run the examples.
+           For example (in bash)
+            export CLIMBERDIR=/usr/src/Climber
+*** Note: Due to limitations in the software, the full path name should be less than 40 characters.
+This is illegal!
+/home/dahlia/veryloooooooooooooooongpathname/toolongfor/Climber/
+This is ok
+/home/dahlia/Climber/
+
+
+Example1: Ribose Binding Protein
+=========
+
+
+(1) Create a new directory,
+for example RUNxxx (where xx is a number you choose) and
+cd into this directory (cd RUNxxx)
+
+(2) Download pdb files  (example here shows 2dri & 1ba2)
+
+curl -o 2dri_orig.pdb http://www.rcsb.org/pdb/files/2dri.pdb
+curl -o 1ba2_orig.pdb http://www.rcsb.org/pdb/files/1ba2.pdb
+
+Note that the downloaded files are renamed to xxx_orig.pdb.
+In the following step relevant information will be extracted
+and the resulting truncated file is renamed to xxx.pdb.
+
+(3) Select the desired chains when the pdb file contains multiple chains.
+Note that it is possible to morph two structures containing more
+than one chain, no example is given in this tutorial.
+
+In the example below select chain A from 1ba2_orig.pdb.
+
+awk '/ATOM/ {print}' < 2dri_orig.pdb > 2dri.pdb
+awk '/ATOM/ {print}' < 1ba2_orig.pdb | awk '$5=="A" {print}' > 1ba2.pdb
+
+(4) Alignment
+
+${CLIMBERDIR}/sh/rms.sh 1ba2 2dri > morphx.al1
+
+Creates an alignment file morphx.al1.
+You can use any alignment, but the format must be equivalent to the morphx.al1 format.
+Only residues that are marked as equivalent (with a |) are used for the morph.
+If you are using another alignment, you must reformat to match the morphx.al1
+output.
+
+(5) Morph 50 steps
+**WARNING: this is the only time consuming step -- it may take from minutes
+  to hours depending on your input files.
+
+${CLIMBERDIR}/sh/morphx.sh 1ba2 2dri 50
+
+This will create a new directory 1ba2_2dri_050step/
+
+The minumum number of steps depends on the rms between the two structures
+but is usually no less then 40 steps and may be more. The maximum number of
+steps is 999.
+If the interpolation cannot reach the final structure in the number of steps
+indicated, it will automatically interpolate in the minimum number of steps
+needed. Note that the number of steps is not exact, an interpolation may take
+more or less steps, but will use the  number of steps indicated in the script
+as a guide.
+
+
+(6) Extract information from the logfile
+* drms vs. numsteps:
+
+awk '/^imorph=/  {print $2 $12}' 1ba2_2dri_050step.log > steps_vs_drms
+
+* drms vs. ENCAD potential energy plot:
+
+awk '/^imorph=/  {print $12 $19}' 1ba2_2dri_050step.log > drms_vs_energy
+
+
+(7) Make a movie in PyMol.
+PyMol is copyrighted software and requires a subscription to download.
+At the time of writing, all academic use of PyMol is free.
+http://delsci.com/rel/099/ for subscriptions.
+
+There are two options to use PyMol to visualize the morph,
+one is interactive, the other is scripted.
+
+(a) Create a movie directly in PyMOL creating a pml file that first does a
+cd to the directory where the pdb files are and then has the following
+command for each pdb file. Assume there are R pdb files.
+
+cd directory where pdb files are installed
+load filexxx.pdb,movie,0
+load fileyyy,pdb,movie,1
+etc.
+load filezzz, pdb,movie,R
+
+Or make a script to run in PyMol:
+ls -1 file0*.pdb > list
+awk '{print "load "$1", mov"}' list > movie.pml
+
+
+(b) Create a script that loads each frame individually, formats and
+outputs a PNG file. The series of PNG files can be made into a movie.
+
+cd directory where pdb files are installed
+ls -1 file0*.pdb > list
+awk 'sub(/.pdb/,"") {print "reinitialize\nload "$1".pdb\nhide sticks\nshow cartoon\nray 180, 180\npng "$1".png"}' list >
+ movie.pml
+
+If PyMOL is installed on your linux machine, run pymol -c movie.pml
+from the command line.
+Alternatively make a new directory (say PDBfile) with all file*.pdb files
+that were output as well as list and  movie.pml. Export the directory to
+a PC or Mac where PyMOL is installed. Open Pymol, cd to the directory where
+movie.pml and the .pdb files are. Run movie.pml.
+
+
+
+
+Example2: Troponin - not the same sequence.
+=========
+
+(1) Download PDB files.
+
+curl -o 1dtl_orig.pdb http://www.rcsb.org/pdb/files/1dtl.pdb
+curl -o 1aj4_orig.pdb http://www.rcsb.org/pdb/files/1aj4.pdb
+
+Note that the downloaded files are renamed to xxx_orig.pdb.
+
+(2) Select chain A from 1dtl.
+
+awk '/^ATOM/ {print}' < 1dtl_orig.pdb | awk '$5=="A"' > 1dtl.pdb
+awk '/^ATOM/ {print}' < 1aj4_orig.pdb > 1aj4.pdb
+
+(3) Alignment
+
+${CLIMBERDIR}/sh/rms.sh 1dtl 1aj4 > morphx.al1
+
+Creates an alignment file morphx.al1.
+Manually edit the alignment file.
+The sequences are not identical, but we make all residues that can
+be aligned equivalent.
+Note that an alignment can also have gaps. In this case, residues that
+are aligned to gaps will not be included in the morph distance constraints.
+However those residues may become disordered in the morph.
+
+cp morphx.al1 morphx.al1.orig
+vi morphx.al1
+
+(4) Morph 50 steps
+**WARNING: this is the only time consuming step -- it may take from minutes
+  to hours depending on your input files.
+
+(5) Extract information from the logfile
+
+(6) Make a movie in PyMol.

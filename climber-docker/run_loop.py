@@ -255,10 +255,10 @@ if __name__ == "__main__":
         check_file_param_is_valid(args.input_csv, cli_defaults)
 
         write_gh_args_file(args.initial_pdb, args.target_pdb, args.input_csv, args.experiment_id)
-        # container_id = climber_controller.launch_climber(cli_defaults)
+        container_id = climber_controller.launch_climber(cli_defaults)
         reset_state_flag(cli_defaults)
         grasshopper_controller.launch_grasshopper(cli_defaults)
-        # climber_controller.stop_background_docker(container_id)
+        climber_controller.stop_background_docker(container_id)
         exit(0)
 
     print('Oh - probably missing one or more required parameters.')

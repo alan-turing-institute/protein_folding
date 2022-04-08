@@ -59,24 +59,37 @@ def launch_grasshopper(cli_defaults):
 
     # Create the full commandline as a string.
     # 
-    # This approach is used, becuase attempting to rely on the automatic formatting of 
+    # This approach is used, because attempting to rely on the automatic formatting of 
     # passing a list of args to `subprocess.call_output` does not play nicely with the 
     # `runscript` value.
     #
-    # The final string should look like:
+    # The final string should look like (using GrasshopperPlayer):
     # ```
     # c:\Program Files\Rhino 7\System\Rhino.exe"  /nosplash /runscript="-GrasshopperPlayer 
     # C:\Users\proteins\protein_folding\climber-docker\gh_loop_with_cli.gh _Exit" /notemplate
     # ```
-    full_cmd = '"{}" /nosplash /runscript="-GrasshopperPlayer {} _Exit" /notemplate'.format(
-        rhino_fpath,
-        grasshopper_fpath
-    )
-
-    # full_cmd = '"{}" /nosplash /runscript="-Grasshopper {}" /notemplate'.format(
+    # For some unknown reason the GrasshopperPlayer quits before exporting the PBD file
+    # full_cmd = '"{}" /nosplash /runscript="-GrasshopperPlayer {} _Exit" /notemplate'.format(
     #     rhino_fpath,
     #     grasshopper_fpath
     # )
+    #
+    # The final string should look like (using Grasshopper):
+    # ```
+    # c:\Program Files\Rhino 7\System\Rhino.exe"  /nosplash /runscript="-Grasshopper 
+    # editor load document open C:\Users\proteins\protein_folding\climber-docker\gh_loop_with_cli.gh _enter" /notemplate
+    # ```
+    # Ideally the command should include `_exit Yes` to quite after completing. However this fails if there are
+    # any open error messages or dialog boxes.
+    # full_cmd = '"{}" /nosplash /runscript="-Grasshopper editor load document open {} _enter _Exit Yes" /notemplate'.format(
+    #     rhino_fpath,
+    #     grasshopper_fpath
+    # )
+    # Therefore using this command for now
+    full_cmd = '"{}" /nosplash /runscript="-Grasshopper editor load document open {} _enter" /notemplate'.format(
+        rhino_fpath,
+        grasshopper_fpath
+    )
 
     # Now lauch Rhino itself
     # chdir(rhino_dir)
